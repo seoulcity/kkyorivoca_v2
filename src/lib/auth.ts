@@ -5,10 +5,10 @@ import type { User } from '@supabase/supabase-js';
 
 export const user = writable<User | null>(null);
 
-// 현재 세션 체크
+// Load the user from session on page load
 export async function checkSession() {
   const { data } = await supabase.auth.getSession();
-  user.set(data.session?.user || null);
+  user.set(data.session?.user ?? null);
 }
 
 // 구글 로그인
@@ -16,7 +16,11 @@ export async function signInWithGoogle() {
   const { error } = await supabase.auth.signInWithOAuth({
     provider: 'google',
     options: {
-      redirectTo: 'https://genpub.vercel.app'
+      redirectTo: 'https://genpub.vercel.app',
+      queryParams: {
+        access_type: 'offline',
+        prompt: 'consent',
+      }
     }
   });
   
