@@ -3,12 +3,16 @@
 # 데이터베이스 스키마 및 테이블 정보 인덱싱 스크립트
 # PostgreSQL 데이터베이스의 스키마 구조와 테이블 정보를 추출하여 JSON 파일로 저장합니다.
 
+# 스크립트의 디렉토리를 확인
+SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" &>/dev/null && pwd)"
+PROJECT_ROOT="$(dirname "$SCRIPT_DIR")"
+
 # .env 파일에서 환경 변수 로드
-if [ -f .env ]; then
-  export $(grep -v '^#' .env | xargs)
-  echo "환경 변수를 .env 파일에서 로드했습니다."
+if [ -f "$PROJECT_ROOT/.env" ]; then
+  export $(grep -v '^#' "$PROJECT_ROOT/.env" | xargs)
+  echo "환경 변수를 $PROJECT_ROOT/.env 파일에서 로드했습니다."
 else
-  echo "경고: .env 파일을 찾을 수 없습니다."
+  echo "경고: .env 파일을 찾을 수 없습니다. ($PROJECT_ROOT/.env)"
   exit 1
 fi
 
@@ -22,7 +26,7 @@ for var in "${required_vars[@]}"; do
 done
 
 # 결과를 저장할 디렉토리 생성
-output_dir="src/db/schema"
+output_dir="$PROJECT_ROOT/src/db/schema"
 mkdir -p "$output_dir"
 
 echo "PostgreSQL 데이터베이스 스키마 인덱싱을 시작합니다..."
