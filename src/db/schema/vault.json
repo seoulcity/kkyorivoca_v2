@@ -1,0 +1,80 @@
+{
+  "schema": "vault",
+  "database": "postgres",
+  "extracted_at": "2025-04-26T11:41:28Z",
+  "tables": [
+    {
+      "name": "secrets",
+      "columns": [
+        {
+          "name": "id",
+          "type": "|",
+          "nullable": "uuid",
+          "default": "|",
+          "max_length": "NO"
+        },
+        {
+          "name": "name",
+          "type": "|",
+          "nullable": "text",
+          "default": "|",
+          "max_length": "YES"
+        },
+        {
+          "name": "description",
+          "type": "|",
+          "nullable": "text",
+          "default": "|",
+          "max_length": "NO"
+        },
+        {
+          "name": "secret",
+          "type": "|",
+          "nullable": "text",
+          "default": "|",
+          "max_length": "NO"
+        },
+        {
+          "name": "key_id",
+          "type": "|",
+          "nullable": "uuid",
+          "default": "|",
+          "max_length": "YES"
+        },
+        {
+          "name": "nonce",
+          "type": "|",
+          "nullable": "bytea",
+          "default": "|",
+          "max_length": "YES"
+        },
+        {
+          "name": "created_at",
+          "type": "|",
+          "nullable": "timestamp",
+          "default": "with",
+          "max_length": "time"
+        },
+        {
+          "name": "updated_at",
+          "type": "|",
+          "nullable": "timestamp",
+          "default": "with",
+          "max_length": "time"
+        }
+      ],
+      "indexes": [
+        {
+          "name": "secrets_name_idx",
+          "unique": "|",
+          "columns": "t         |"
+        },
+        {
+          "name": "secrets_pkey",
+          "unique": "|",
+          "columns": "   | t         |"
+        }
+      ]
+    }
+  ]
+}

@@ -1,0 +1,412 @@
+{
+  "schema": "storage",
+  "database": "postgres",
+  "extracted_at": "2025-04-26T11:41:07Z",
+  "tables": [
+    {
+      "name": "buckets",
+      "columns": [
+        {
+          "name": "id",
+          "type": "|",
+          "nullable": "text",
+          "default": "|",
+          "max_length": "NO"
+        },
+        {
+          "name": "name",
+          "type": "|",
+          "nullable": "text",
+          "default": "|",
+          "max_length": "NO"
+        },
+        {
+          "name": "owner",
+          "type": "|",
+          "nullable": "uuid",
+          "default": "|",
+          "max_length": "YES"
+        },
+        {
+          "name": "created_at",
+          "type": "|",
+          "nullable": "timestamp",
+          "default": "with",
+          "max_length": "time"
+        },
+        {
+          "name": "updated_at",
+          "type": "|",
+          "nullable": "timestamp",
+          "default": "with",
+          "max_length": "time"
+        },
+        {
+          "name": "public",
+          "type": "|",
+          "nullable": "boolean",
+          "default": "|",
+          "max_length": "YES"
+        },
+        {
+          "name": "avif_autodetection",
+          "type": "|",
+          "nullable": "boolean",
+          "default": "|",
+          "max_length": "YES"
+        },
+        {
+          "name": "file_size_limit",
+          "type": "|",
+          "nullable": "bigint",
+          "default": "|",
+          "max_length": "YES"
+        },
+        {
+          "name": "allowed_mime_types",
+          "type": "|",
+          "nullable": "ARRAY",
+          "default": "|",
+          "max_length": "YES"
+        },
+        {
+          "name": "owner_id",
+          "type": "|",
+          "nullable": "text",
+          "default": "|",
+          "max_length": "YES"
+        }
+      ],
+      "indexes": [
+        {
+          "name": "bname",
+          "unique": "|",
+          "columns": "      | t         |"
+        },
+        {
+          "name": "buckets_pkey",
+          "unique": "|",
+          "columns": "t         |"
+        }
+      ]
+    },
+    {
+      "name": "migrations",
+      "columns": [
+        {
+          "name": "id",
+          "type": "|",
+          "nullable": "integer",
+          "default": "|",
+          "max_length": "NO"
+        },
+        {
+          "name": "name",
+          "type": "|",
+          "nullable": "character",
+          "default": "varying",
+          "max_length": "|"
+        },
+        {
+          "name": "hash",
+          "type": "|",
+          "nullable": "character",
+          "default": "varying",
+          "max_length": "|"
+        },
+        {
+          "name": "executed_at",
+          "type": "|",
+          "nullable": "timestamp",
+          "default": "without",
+          "max_length": "time"
+        }
+      ],
+      "indexes": [
+        {
+          "name": "migrations_name_key",
+          "unique": "|",
+          "columns": "t         |"
+        },
+        {
+          "name": "migrations_pkey",
+          "unique": "|",
+          "columns": "   | t         |"
+        }
+      ]
+    },
+    {
+      "name": "objects",
+      "columns": [
+        {
+          "name": "id",
+          "type": "|",
+          "nullable": "uuid",
+          "default": "|",
+          "max_length": "NO"
+        },
+        {
+          "name": "bucket_id",
+          "type": "|",
+          "nullable": "text",
+          "default": "|",
+          "max_length": "YES"
+        },
+        {
+          "name": "name",
+          "type": "|",
+          "nullable": "text",
+          "default": "|",
+          "max_length": "YES"
+        },
+        {
+          "name": "owner",
+          "type": "|",
+          "nullable": "uuid",
+          "default": "|",
+          "max_length": "YES"
+        },
+        {
+          "name": "created_at",
+          "type": "|",
+          "nullable": "timestamp",
+          "default": "with",
+          "max_length": "time"
+        },
+        {
+          "name": "updated_at",
+          "type": "|",
+          "nullable": "timestamp",
+          "default": "with",
+          "max_length": "time"
+        },
+        {
+          "name": "last_accessed_at",
+          "type": "|",
+          "nullable": "timestamp",
+          "default": "with",
+          "max_length": "time"
+        },
+        {
+          "name": "metadata",
+          "type": "|",
+          "nullable": "jsonb",
+          "default": "|",
+          "max_length": "YES"
+        },
+        {
+          "name": "path_tokens",
+          "type": "|",
+          "nullable": "ARRAY",
+          "default": "|",
+          "max_length": "YES"
+        },
+        {
+          "name": "version",
+          "type": "|",
+          "nullable": "text",
+          "default": "|",
+          "max_length": "YES"
+        },
+        {
+          "name": "owner_id",
+          "type": "|",
+          "nullable": "text",
+          "default": "|",
+          "max_length": "YES"
+        },
+        {
+          "name": "user_metadata",
+          "type": "|",
+          "nullable": "jsonb",
+          "default": "|",
+          "max_length": "YES"
+        }
+      ],
+      "indexes": [
+        {
+          "name": "bucketid_objname",
+          "unique": "|",
+          "columns": "         | t         |"
+        },
+        {
+          "name": "idx_objects_bucket_id_name",
+          "unique": "|",
+          "columns": "f         |"
+        },
+        {
+          "name": "name_prefix_search",
+          "unique": "|",
+          "columns": "       | f         |"
+        },
+        {
+          "name": "objects_pkey",
+          "unique": "|",
+          "columns": "             | t         |"
+        }
+      ]
+    },
+    {
+      "name": "s3_multipart_uploads",
+      "columns": [
+        {
+          "name": "id",
+          "type": "|",
+          "nullable": "text",
+          "default": "|",
+          "max_length": "NO"
+        },
+        {
+          "name": "in_progress_size",
+          "type": "|",
+          "nullable": "bigint",
+          "default": "|",
+          "max_length": "NO"
+        },
+        {
+          "name": "upload_signature",
+          "type": "|",
+          "nullable": "text",
+          "default": "|",
+          "max_length": "NO"
+        },
+        {
+          "name": "bucket_id",
+          "type": "|",
+          "nullable": "text",
+          "default": "|",
+          "max_length": "NO"
+        },
+        {
+          "name": "key",
+          "type": "|",
+          "nullable": "text",
+          "default": "|",
+          "max_length": "NO"
+        },
+        {
+          "name": "version",
+          "type": "|",
+          "nullable": "text",
+          "default": "|",
+          "max_length": "NO"
+        },
+        {
+          "name": "owner_id",
+          "type": "|",
+          "nullable": "text",
+          "default": "|",
+          "max_length": "YES"
+        },
+        {
+          "name": "created_at",
+          "type": "|",
+          "nullable": "timestamp",
+          "default": "with",
+          "max_length": "time"
+        },
+        {
+          "name": "user_metadata",
+          "type": "|",
+          "nullable": "jsonb",
+          "default": "|",
+          "max_length": "YES"
+        }
+      ],
+      "indexes": [
+        {
+          "name": "idx_multipart_uploads_list",
+          "unique": "|",
+          "columns": "f         |"
+        },
+        {
+          "name": "s3_multipart_uploads_pkey",
+          "unique": "|",
+          "columns": "| t         |"
+        }
+      ]
+    },
+    {
+      "name": "s3_multipart_uploads_parts",
+      "columns": [
+        {
+          "name": "id",
+          "type": "|",
+          "nullable": "uuid",
+          "default": "|",
+          "max_length": "NO"
+        },
+        {
+          "name": "upload_id",
+          "type": "|",
+          "nullable": "text",
+          "default": "|",
+          "max_length": "NO"
+        },
+        {
+          "name": "size",
+          "type": "|",
+          "nullable": "bigint",
+          "default": "|",
+          "max_length": "NO"
+        },
+        {
+          "name": "part_number",
+          "type": "|",
+          "nullable": "integer",
+          "default": "|",
+          "max_length": "NO"
+        },
+        {
+          "name": "bucket_id",
+          "type": "|",
+          "nullable": "text",
+          "default": "|",
+          "max_length": "NO"
+        },
+        {
+          "name": "key",
+          "type": "|",
+          "nullable": "text",
+          "default": "|",
+          "max_length": "NO"
+        },
+        {
+          "name": "etag",
+          "type": "|",
+          "nullable": "text",
+          "default": "|",
+          "max_length": "NO"
+        },
+        {
+          "name": "owner_id",
+          "type": "|",
+          "nullable": "text",
+          "default": "|",
+          "max_length": "YES"
+        },
+        {
+          "name": "version",
+          "type": "|",
+          "nullable": "text",
+          "default": "|",
+          "max_length": "NO"
+        },
+        {
+          "name": "created_at",
+          "type": "|",
+          "nullable": "timestamp",
+          "default": "with",
+          "max_length": "time"
+        }
+      ],
+      "indexes": [
+        {
+          "name": "s3_multipart_uploads_parts_pkey",
+          "unique": "|",
+          "columns": "t         |"
+        }
+      ]
+    }
+  ]
+}

@@ -1,0 +1,172 @@
+{
+  "schema": "realtime",
+  "database": "postgres",
+  "extracted_at": "2025-04-26T11:40:59Z",
+  "tables": [
+    {
+      "name": "messages",
+      "columns": [
+        {
+          "name": "topic",
+          "type": "|",
+          "nullable": "text",
+          "default": "|",
+          "max_length": "NO"
+        },
+        {
+          "name": "extension",
+          "type": "|",
+          "nullable": "text",
+          "default": "|",
+          "max_length": "NO"
+        },
+        {
+          "name": "payload",
+          "type": "|",
+          "nullable": "jsonb",
+          "default": "|",
+          "max_length": "YES"
+        },
+        {
+          "name": "event",
+          "type": "|",
+          "nullable": "text",
+          "default": "|",
+          "max_length": "YES"
+        },
+        {
+          "name": "private",
+          "type": "|",
+          "nullable": "boolean",
+          "default": "|",
+          "max_length": "YES"
+        },
+        {
+          "name": "updated_at",
+          "type": "|",
+          "nullable": "timestamp",
+          "default": "without",
+          "max_length": "time"
+        },
+        {
+          "name": "inserted_at",
+          "type": "|",
+          "nullable": "timestamp",
+          "default": "without",
+          "max_length": "time"
+        },
+        {
+          "name": "id",
+          "type": "|",
+          "nullable": "uuid",
+          "default": "|",
+          "max_length": "NO"
+        }
+      ],
+      "indexes": [
+        {
+          "name": "messages_pkey",
+          "unique": "|",
+          "columns": "t         |"
+        }
+      ]
+    },
+    {
+      "name": "schema_migrations",
+      "columns": [
+        {
+          "name": "version",
+          "type": "|",
+          "nullable": "bigint",
+          "default": "|",
+          "max_length": "NO"
+        },
+        {
+          "name": "inserted_at",
+          "type": "|",
+          "nullable": "timestamp",
+          "default": "without",
+          "max_length": "time"
+        }
+      ],
+      "indexes": [
+        {
+          "name": "schema_migrations_pkey",
+          "unique": "|",
+          "columns": "t         |"
+        }
+      ]
+    },
+    {
+      "name": "subscription",
+      "columns": [
+        {
+          "name": "id",
+          "type": "|",
+          "nullable": "bigint",
+          "default": "|",
+          "max_length": "NO"
+        },
+        {
+          "name": "subscription_id",
+          "type": "|",
+          "nullable": "uuid",
+          "default": "|",
+          "max_length": "NO"
+        },
+        {
+          "name": "entity",
+          "type": "|",
+          "nullable": "regclass",
+          "default": "|",
+          "max_length": "NO"
+        },
+        {
+          "name": "filters",
+          "type": "|",
+          "nullable": "ARRAY",
+          "default": "|",
+          "max_length": "NO"
+        },
+        {
+          "name": "claims",
+          "type": "|",
+          "nullable": "jsonb",
+          "default": "|",
+          "max_length": "NO"
+        },
+        {
+          "name": "claims_role",
+          "type": "|",
+          "nullable": "regrole",
+          "default": "|",
+          "max_length": "NO"
+        },
+        {
+          "name": "created_at",
+          "type": "|",
+          "nullable": "timestamp",
+          "default": "without",
+          "max_length": "time"
+        }
+      ],
+      "indexes": [
+        {
+          "name": "ix_realtime_subscription_entity",
+          "unique": "|",
+          "columns": "               | f         |"
+        },
+        {
+          "name": "pk_subscription",
+          "unique": "|",
+          "columns": "                               | t         |"
+        },
+        {
+          "name": "subscription_subscription_id_entity_filters_key",
+          "unique": "|",
+          "columns": "t         |"
+        }
+      ]
+    }
+  ]
+}
