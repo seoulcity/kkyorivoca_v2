@@ -19,9 +19,9 @@
 	let { children } = $props();
 	
 	// 모달 상태가 변경될 때마다 명확하게 로깅
-	$: {
+	$effect(() => {
 		console.log('Layout: Modal show state changed to:', showConsentModal);
-	}
+	});
 
 	onMount(() => {
 		console.log('Layout: Component mounted');

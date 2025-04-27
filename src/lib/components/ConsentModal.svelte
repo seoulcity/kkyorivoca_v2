@@ -5,7 +5,8 @@
 	import { user } from '$lib/auth';
 	import { hasAcceptedPolicies, needsPolicyReview } from '$lib/api/consents';
 
-	export let show = false;
+	// Props 정의
+	let { show = false } = $props();
 	
 	// Track which policies the user needs to review
 	let policyReviewState = {
@@ -20,13 +21,13 @@
 	}>();
 	
 	// 모달 표시 상태가 변경될 때마다 로깅
-	$: {
+	$effect(() => {
 		console.log('ConsentModal Component: Modal visibility changed to:', show);
 		if (show && $user) {
 			// 모달이 표시될 때 정책 동의 상태 확인
 			checkPolicyConsent();
 		}
-	}
+	});
 	
 	async function checkPolicyConsent() {
 		if (!$user) {
