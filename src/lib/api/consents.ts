@@ -5,6 +5,7 @@ import type { UserConsents, PolicyVersions } from '../../db/types/public';
  * Get the current user's consent status
  */
 export async function getUserConsents(userId: string): Promise<UserConsents | null> {
+  console.log('API: Getting user consents for user:', userId);
   const { data, error } = await supabase
     .from('user_consents')
     .select('*')
@@ -16,6 +17,7 @@ export async function getUserConsents(userId: string): Promise<UserConsents | nu
     return null;
   }
 
+  console.log('API: User consents data:', data);
   return data as unknown as UserConsents;
 }
 
@@ -23,6 +25,7 @@ export async function getUserConsents(userId: string): Promise<UserConsents | nu
  * Get the current version of a policy
  */
 export async function getCurrentPolicyVersion(policyType: 'privacy_policy' | 'terms_of_service'): Promise<PolicyVersions | null> {
+  console.log('API: Getting current policy version for:', policyType);
   const { data, error } = await supabase
     .from('policy_versions')
     .select('*')
@@ -35,6 +38,7 @@ export async function getCurrentPolicyVersion(policyType: 'privacy_policy' | 'te
     return null;
   }
 
+  console.log(`API: Current ${policyType} version:`, data);
   return data as unknown as PolicyVersions;
 }
 
@@ -46,6 +50,8 @@ export async function recordPolicyConsent(
   policyType: 'privacy_policy' | 'terms_of_service',
   accepted: boolean
 ): Promise<boolean> {
+  console.log(`API: Recording ${policyType} consent for user ${userId}, accepted: ${accepted}`);
+  
   // Get current policy version
   const currentPolicyVersion = await getCurrentPolicyVersion(policyType);
   if (!currentPolicyVersion) {
@@ -55,6 +61,7 @@ export async function recordPolicyConsent(
 
   // Check if user already has a consent record
   const existingConsent = await getUserConsents(userId);
+  console.log('API: Existing consent record:', existingConsent);
 
   // Prepare update data
   const updateData: Partial<UserConsents> = {};
@@ -69,8 +76,11 @@ export async function recordPolicyConsent(
     updateData.termsOfServiceAcceptedAt = accepted ? new Date().toISOString() : null;
   }
 
+  console.log('API: Update data prepared:', updateData);
+
   if (existingConsent) {
     // Update existing record
+    console.log('API: Updating existing consent record');
     const { error } = await supabase
       .from('user_consents')
       .update(updateData)
@@ -82,6 +92,7 @@ export async function recordPolicyConsent(
     }
   } else {
     // Create new record
+    console.log('API: Creating new consent record');
     const newConsent = {
       user_id: userId,
       privacy_policy_accepted: policyType === 'privacy_policy' ? accepted : false,
@@ -92,6 +103,7 @@ export async function recordPolicyConsent(
       terms_of_service_accepted_at: policyType === 'terms_of_service' && accepted ? new Date().toISOString() : null
     };
 
+    console.log('API: New consent data:', newConsent);
     const { error } = await supabase
       .from('user_consents')
       .insert(newConsent);
@@ -102,6 +114,7 @@ export async function recordPolicyConsent(
     }
   }
 
+  console.log(`API: ${policyType} consent recorded successfully`);
   return true;
 }
 
@@ -109,13 +122,17 @@ export async function recordPolicyConsent(
  * Check if user has accepted both privacy policy and terms of service
  */
 export async function hasAcceptedPolicies(userId: string): Promise<boolean> {
+  console.log('API: Checking if user has accepted all policies:', userId);
   const consents = await getUserConsents(userId);
   
   if (!consents) {
+    console.log('API: No consent records found for user');
     return false;
   }
   
-  return consents.privacyPolicyAccepted && consents.termsOfServiceAccepted;
+  const result = consents.privacyPolicyAccepted && consents.termsOfServiceAccepted;
+  console.log('API: Policy acceptance status:', result);
+  return result;
 }
 
 /**
@@ -126,9 +143,11 @@ export async function needsPolicyReview(userId: string): Promise<{
   needsPrivacyPolicyReview: boolean;
   needsTermsOfServiceReview: boolean;
 }> {
+  console.log('API: Checking if user needs policy review:', userId);
   const consents = await getUserConsents(userId);
   
   if (!consents) {
+    console.log('API: No consents found, user needs to review all policies');
     return {
       needsPrivacyPolicyReview: true,
       needsTermsOfServiceReview: true
@@ -138,7 +157,7 @@ export async function needsPolicyReview(userId: string): Promise<{
   const currentPrivacyPolicy = await getCurrentPolicyVersion('privacy_policy');
   const currentTermsOfService = await getCurrentPolicyVersion('terms_of_service');
   
-  return {
+  const result = {
     needsPrivacyPolicyReview: 
       !consents.privacyPolicyAccepted || 
       !currentPrivacyPolicy || 
@@ -149,4 +168,7 @@ export async function needsPolicyReview(userId: string): Promise<{
       !currentTermsOfService || 
       consents.termsOfServiceVersion !== currentTermsOfService.version
   };
+  
+  console.log('API: Policy review needs:', result);
+  return result;
 } 

@@ -1,12 +1,22 @@
 <!-- src/routes/+page.svelte -->
 <script lang="ts">
-	import { signInWithGoogle, user } from '$lib/auth';
+	import { signInWithGoogle, user, userConsentStatus } from '$lib/auth';
 	import { goto } from '$app/navigation';
+	import Footer from '$lib/components/Footer.svelte';
 	
-	// 로그인 상태에 따라 메인 페이지로 리다이렉트
+	// 로그인 상태 및 동의 상태에 따라 메인 페이지로 리다이렉트
 	$effect(() => {
-		if ($user) {
-			goto('/main');
+		// 로그인했고 콘센트 체크가 완료된 상태일 때만 메인 페이지로 이동
+		if ($user && $userConsentStatus !== null) {
+			console.log('Home: User is logged in, consent status:', $userConsentStatus ? 'accepted' : 'not accepted');
+			if ($userConsentStatus === true) {
+				console.log('Home: User has accepted policies, redirecting to main page');
+				goto('/main');
+			} else {
+				// 동의 페이지에서 동의 완료하면 userConsentStatus가 true로 변경되고
+				// 위의 조건에 따라 메인 페이지로 자동 이동함
+				console.log('Home: User has not accepted policies, waiting for consent');
+			}
 		}
 	});
 </script>
@@ -40,5 +50,14 @@
 			</svg>
 			Google 계정으로 로그인
 		</button>
+		
+		<div class="mt-6 text-center text-sm text-gray-500">
+			로그인하면 
+			<a href="/terms-of-service" class="text-blue-600 hover:underline">서비스 이용약관</a> 및 
+			<a href="/privacy-policy" class="text-blue-600 hover:underline">개인정보 처리방침</a>에 
+			동의하는 것으로 간주됩니다.
+		</div>
 	</div>
+	
+	<Footer />
 </div>

@@ -1,7 +1,7 @@
 {
   "schema": "supabase_migrations",
   "database": "postgres",
-  "extracted_at": "2025-04-26T11:41:22Z",
+  "extracted_at": "2025-04-27T00:09:38Z",
   "tables": [
     {
       "name": "schema_migrations",

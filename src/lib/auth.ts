@@ -4,6 +4,8 @@ import { supabase } from './supabase';
 import type { User } from '@supabase/supabase-js';
 
 export const user = writable<User | null>(null);
+// 사용자의 이용약관 및 개인정보처리방침 동의 상태를 저장하는 스토어
+export const userConsentStatus = writable<boolean | null>(null);
 
 // Load the user from session on page load
 export async function checkSession() {
@@ -42,5 +44,6 @@ export async function signOut() {
   }
   
   user.set(null);
+  userConsentStatus.set(null);
   return { success: true };
 } 

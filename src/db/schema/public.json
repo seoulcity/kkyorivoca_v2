@@ -1,7 +1,146 @@
 {
   "schema": "public",
   "database": "postgres",
-  "extracted_at": "2025-04-26T11:40:58Z",
+  "extracted_at": "2025-04-27T00:09:11Z",
   "tables": [
+    {
+      "name": "policy_versions",
+      "columns": [
+        {
+          "name": "id",
+          "type": "|",
+          "nullable": "uuid",
+          "default": "|",
+          "max_length": "NO"
+        },
+        {
+          "name": "policy_type",
+          "type": "|",
+          "nullable": "character",
+          "default": "varying",
+          "max_length": "|"
+        },
+        {
+          "name": "version",
+          "type": "|",
+          "nullable": "character",
+          "default": "varying",
+          "max_length": "|"
+        },
+        {
+          "name": "published_at",
+          "type": "|",
+          "nullable": "timestamp",
+          "default": "with",
+          "max_length": "time"
+        },
+        {
+          "name": "is_current",
+          "type": "|",
+          "nullable": "boolean",
+          "default": "|",
+          "max_length": "NO"
+        }
+      ],
+      "indexes": [
+        {
+          "name": "idx_policy_versions_current",
+          "unique": "|",
+          "columns": "t         |"
+        },
+        {
+          "name": "policy_versions_pkey",
+          "unique": "|",
+          "columns": "      | t         |"
+        }
+      ]
+    },
+    {
+      "name": "user_consents",
+      "columns": [
+        {
+          "name": "id",
+          "type": "|",
+          "nullable": "uuid",
+          "default": "|",
+          "max_length": "NO"
+        },
+        {
+          "name": "user_id",
+          "type": "|",
+          "nullable": "uuid",
+          "default": "|",
+          "max_length": "NO"
+        },
+        {
+          "name": "privacy_policy_accepted",
+          "type": "|",
+          "nullable": "boolean",
+          "default": "|",
+          "max_length": "NO"
+        },
+        {
+          "name": "privacy_policy_version",
+          "type": "|",
+          "nullable": "character",
+          "default": "varying",
+          "max_length": "|"
+        },
+        {
+          "name": "privacy_policy_accepted_at",
+          "type": "|",
+          "nullable": "timestamp",
+          "default": "with",
+          "max_length": "time"
+        },
+        {
+          "name": "terms_of_service_accepted",
+          "type": "|",
+          "nullable": "boolean",
+          "default": "|",
+          "max_length": "NO"
+        },
+        {
+          "name": "terms_of_service_version",
+          "type": "|",
+          "nullable": "character",
+          "default": "varying",
+          "max_length": "|"
+        },
+        {
+          "name": "terms_of_service_accepted_at",
+          "type": "|",
+          "nullable": "timestamp",
+          "default": "with",
+          "max_length": "time"
+        },
+        {
+          "name": "created_at",
+          "type": "|",
+          "nullable": "timestamp",
+          "default": "with",
+          "max_length": "time"
+        },
+        {
+          "name": "updated_at",
+          "type": "|",
+          "nullable": "timestamp",
+          "default": "with",
+          "max_length": "time"
+        }
+      ],
+      "indexes": [
+        {
+          "name": "idx_user_consents_user_id",
+          "unique": "|",
+          "columns": "f         |"
+        },
+        {
+          "name": "user_consents_pkey",
+          "unique": "|",
+          "columns": "      | t         |"
+        }
+      ]
+    }
   ]
 }

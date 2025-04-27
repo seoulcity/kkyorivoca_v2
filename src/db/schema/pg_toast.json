@@ -1,7 +1,7 @@
 {
   "schema": "pg_toast",
   "database": "postgres",
-  "extracted_at": "2025-04-26T11:40:51Z",
+  "extracted_at": "2025-04-27T00:09:04Z",
   "tables": [
   ]
 }

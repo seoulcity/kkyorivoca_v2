@@ -1,11 +1,21 @@
 <script lang="ts">
-	import { user, signOut } from '$lib/auth';
+	import { user, userConsentStatus, signOut } from '$lib/auth';
 	import { goto } from '$app/navigation';
+	import Footer from '$lib/components/Footer.svelte';
 	
 	// 로그인 상태 확인, 로그인되지 않았으면 랜딩 페이지로 리다이렉트
 	$effect(() => {
 		if (!$user) {
+			console.log('Main: User not logged in, redirecting to home page');
 			goto('/');
+		} else {
+			console.log('Main: User is logged in, consent status:', $userConsentStatus === null ? 'unknown' : ($userConsentStatus ? 'accepted' : 'not accepted'));
+			// 동의 여부가 확인된 상태에서 동의하지 않았다면 홈 페이지로 이동
+			// (Layout에서 동의 모달이 표시될 것임)
+			if ($userConsentStatus === false) {
+				console.log('Main: User has not accepted policies, redirecting to home page');
+				goto('/');
+			}
 		}
 	});
 	
@@ -35,4 +45,6 @@
 			로그아웃
 		</button>
 	</div>
+	
+	<Footer />
 </div> 

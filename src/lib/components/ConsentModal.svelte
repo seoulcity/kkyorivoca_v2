@@ -19,21 +19,32 @@
 		close: { success: boolean };
 	}>();
 	
+	// 모달 표시 상태가 변경될 때마다 로깅
+	$: {
+		console.log('ConsentModal: Modal visibility changed to:', show);
+	}
+	
 	// Check if user needs to review policies when the user is loaded
 	$: if ($user && show) {
+		console.log('ConsentModal: User loaded and modal should show, checking policy consent...');
 		checkPolicyConsent();
 	}
 	
 	async function checkPolicyConsent() {
 		if (!$user) return;
 		
+		console.log('ConsentModal: Checking policy consent for user:', $user.id);
 		loading = true;
 		try {
 			policyReviewState = await needsPolicyReview($user.id);
+			console.log('ConsentModal: Policy review state:', policyReviewState);
 			
 			// If no policies need review, close the modal
 			if (!policyReviewState.needsPrivacyPolicyReview && !policyReviewState.needsTermsOfServiceReview) {
+				console.log('ConsentModal: No policies need review, closing modal');
 				dispatch('close', { success: true });
+			} else {
+				console.log('ConsentModal: Policies need review, keeping modal open');
 			}
 		} catch (error) {
 			console.error('Error checking policy consent:', error);
@@ -43,8 +54,12 @@
 	}
 	
 	function handleConsentComplete(event: CustomEvent<{ success: boolean; error?: string }>) {
+		console.log('ConsentModal: Consent completion event received:', event.detail);
 		if (event.detail.success) {
+			console.log('ConsentModal: User accepted policies, closing modal with success');
 			dispatch('close', { success: true });
+		} else {
+			console.log('ConsentModal: Consent not successful, error:', event.detail.error);
 		}
 	}
 </script>
