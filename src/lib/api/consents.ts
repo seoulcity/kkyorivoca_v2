@@ -1,3 +1,4 @@
+// src/lib/api/consents.ts
 import { supabase } from '$lib/supabase';
 import type { UserConsents, PolicyVersions } from '../../db/types/public';
 
@@ -19,7 +20,25 @@ export async function getUserConsents(userId: string): Promise<UserConsents | nu
     }
 
     console.log('API: User consents data:', data);
-    return data as unknown as UserConsents;
+    
+    // Transform snake_case from DB to camelCase for our types
+    if (data) {
+      const userConsent: UserConsents = {
+        id: data.id,
+        userId: data.user_id,
+        privacyPolicyAccepted: data.privacy_policy_accepted,
+        privacyPolicyVersion: data.privacy_policy_version,
+        privacyPolicyAcceptedAt: data.privacy_policy_accepted_at,
+        termsOfServiceAccepted: data.terms_of_service_accepted,
+        termsOfServiceVersion: data.terms_of_service_version,
+        termsOfServiceAcceptedAt: data.terms_of_service_accepted_at,
+        createdAt: data.created_at,
+        updatedAt: data.updated_at
+      };
+      return userConsent;
+    }
+    
+    return null;
   } catch (error) {
     console.error('Unexpected error fetching user consents:', error);
     return null;
@@ -111,17 +130,21 @@ export async function recordPolicyConsent(
   const existingConsent = await getUserConsents(userId);
   console.log('API: Existing consent record:', existingConsent);
 
-  // Prepare update data
-  const updateData: Partial<UserConsents> = {};
+  // Prepare update data for DB (snake_case)
+  let updateData: Record<string, any> = {};
   
   if (policyType === 'privacy_policy') {
-    updateData.privacyPolicyAccepted = accepted;
-    updateData.privacyPolicyVersion = currentPolicyVersion.version;
-    updateData.privacyPolicyAcceptedAt = accepted ? new Date().toISOString() : null;
+    updateData = {
+      privacy_policy_accepted: accepted,
+      privacy_policy_version: currentPolicyVersion.version,
+      privacy_policy_accepted_at: accepted ? new Date().toISOString() : null
+    };
   } else {
-    updateData.termsOfServiceAccepted = accepted;
-    updateData.termsOfServiceVersion = currentPolicyVersion.version;
-    updateData.termsOfServiceAcceptedAt = accepted ? new Date().toISOString() : null;
+    updateData = {
+      terms_of_service_accepted: accepted,
+      terms_of_service_version: currentPolicyVersion.version,
+      terms_of_service_accepted_at: accepted ? new Date().toISOString() : null
+    };
   }
 
   console.log('API: Update data prepared:', updateData);
@@ -178,6 +201,7 @@ export async function hasAcceptedPolicies(userId: string): Promise<boolean> {
     return false;
   }
   
+  // Use the transformed camelCase property names
   const result = consents.privacyPolicyAccepted && consents.termsOfServiceAccepted;
   console.log('API: Policy acceptance status:', result);
   return result;

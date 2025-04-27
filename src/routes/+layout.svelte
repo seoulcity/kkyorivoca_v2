@@ -10,7 +10,7 @@
 	import { hasAcceptedPolicies } from '$lib/api/consents';
 
 	// Show consent modal for new users
-	let showConsentModal = false;
+	let showConsentModal = $state(false);
 	
 	// We need to track consent check to prevent redirect loops
 	let consentCheckComplete = false;
@@ -148,11 +148,27 @@
 			}
 		}
 	});
+	
+	// Forcefully set the modal visibility to true if user is logged in but hasn't accepted policies
+	$effect(() => {
+		console.log('Layout: EFFECT - Monitoring user consent status:', 
+			'User:', $user ? 'logged in' : 'not logged in',
+			'Consent status:', $userConsentStatus === null ? 'checking' : ($userConsentStatus ? 'accepted' : 'not accepted'),
+			'Modal visibility:', showConsentModal);
+			
+		if ($user && $userConsentStatus === false) {
+			console.log('Layout: EFFECT - Forcing consent modal to be visible for user that needs consent');
+			showConsentModal = true;
+		}
+	});
 </script>
 
-<!-- 콘솔에 모달 상태 추적 로그 추가 -->
+<!-- Debug information for modal -->
 {#if showConsentModal}
 	<div style="display: none;">Modal should be visible</div>
+	<script>
+		console.log('DOM: Consent modal should be visible now, showConsentModal =', true);
+	</script>
 {/if}
 
 <ConsentModal show={showConsentModal} on:close={handleConsentClose} />

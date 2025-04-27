@@ -1,3 +1,4 @@
+<!-- src/lib/components/Footer.svelte -->
 <script>
 	// 동적 연도 표시를 위한 변수
 	const currentYear = new Date().getFullYear();

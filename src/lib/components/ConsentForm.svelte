@@ -1,3 +1,4 @@
+<!-- src/lib/components/ConsentForm.svelte -->
 <script lang="ts">
 	import { user } from '$lib/auth';
 	import { recordPolicyConsent } from '$lib/api/consents';

@@ -1,3 +1,4 @@
+<!-- src/routes/main/+page.svelte -->
 <script lang="ts">
 	import { user, userConsentStatus, signOut } from '$lib/auth';
 	import { goto } from '$app/navigation';

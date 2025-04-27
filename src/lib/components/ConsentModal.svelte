@@ -9,12 +9,12 @@
 	let { show = false } = $props();
 	
 	// Track which policies the user needs to review
-	let policyReviewState = {
+	let policyReviewState = $state({
 		needsPrivacyPolicyReview: true,
 		needsTermsOfServiceReview: true
-	};
+	});
 	
-	let loading = true;
+	let loading = $state(true);
 	
 	const dispatch = createEventDispatcher<{
 		close: { success: boolean };
@@ -67,11 +67,16 @@
 </script>
 
 {#if show}
-	<!-- 모달이 표시되는지 확인하기 위한 로그 -->
-	<div class="fixed inset-0 bg-black bg-opacity-50 z-50 flex items-center justify-center" transition:fade>
+	<!-- 디버그 로그 및 모달 표시 -->
+	<script>
+		console.log('%cCONSENT MODAL IS VISIBLE!', 'color: green; font-size: 24px; font-weight: bold;');
+	</script>
+	
+	<div class="fixed inset-0 bg-black bg-opacity-50 z-[9999] flex items-center justify-center" style="position: fixed !important; top: 0; left: 0; right: 0; bottom: 0; z-index: 9999;">
 		<div 
 			class="relative bg-white rounded-lg shadow-xl w-full max-w-md mx-4 overflow-hidden" 
-			transition:fade={{ delay: 150 }}
+			role="dialog" 
+			aria-modal="true"
 		>
 			{#if loading}
 				<div class="p-8 text-center">
