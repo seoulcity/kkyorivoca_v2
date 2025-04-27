@@ -6,19 +6,57 @@ import type { UserConsents, PolicyVersions } from '../../db/types/public';
  */
 export async function getUserConsents(userId: string): Promise<UserConsents | null> {
   console.log('API: Getting user consents for user:', userId);
-  const { data, error } = await supabase
-    .from('user_consents')
-    .select('*')
-    .eq('user_id', userId)
-    .single();
+  try {
+    const { data, error } = await supabase
+      .from('user_consents')
+      .select('*')
+      .eq('user_id', userId)
+      .maybeSingle();
 
-  if (error) {
-    console.error('Error fetching user consents:', error);
+    if (error) {
+      console.error('Error fetching user consents:', error);
+      return null;
+    }
+
+    console.log('API: User consents data:', data);
+    return data as unknown as UserConsents;
+  } catch (error) {
+    console.error('Unexpected error fetching user consents:', error);
     return null;
   }
+}
 
-  console.log('API: User consents data:', data);
-  return data as unknown as UserConsents;
+/**
+ * Create default policy versions if they don't exist
+ */
+export async function createDefaultPolicyVersion(policyType: 'privacy_policy' | 'terms_of_service'): Promise<PolicyVersions | null> {
+  console.log(`API: Creating default policy version for ${policyType}`);
+  
+  const defaultVersion = {
+    policy_type: policyType,
+    version: '1.0',
+    published_at: new Date().toISOString(),
+    is_current: true
+  };
+  
+  try {
+    const { data, error } = await supabase
+      .from('policy_versions')
+      .insert(defaultVersion)
+      .select()
+      .single();
+      
+    if (error) {
+      console.error(`Error creating default ${policyType} version:`, error);
+      return null;
+    }
+    
+    console.log(`API: Created default ${policyType} version:`, data);
+    return data as unknown as PolicyVersions;
+  } catch (error) {
+    console.error(`Unexpected error creating default ${policyType} version:`, error);
+    return null;
+  }
 }
 
 /**
@@ -26,20 +64,30 @@ export async function getUserConsents(userId: string): Promise<UserConsents | nu
  */
 export async function getCurrentPolicyVersion(policyType: 'privacy_policy' | 'terms_of_service'): Promise<PolicyVersions | null> {
   console.log('API: Getting current policy version for:', policyType);
-  const { data, error } = await supabase
-    .from('policy_versions')
-    .select('*')
-    .eq('policy_type', policyType)
-    .eq('is_current', true)
-    .single();
+  try {
+    const { data, error } = await supabase
+      .from('policy_versions')
+      .select('*')
+      .eq('policy_type', policyType)
+      .eq('is_current', true)
+      .maybeSingle();
 
-  if (error) {
-    console.error(`Error fetching current ${policyType} version:`, error);
+    if (error) {
+      console.error(`Error fetching current ${policyType} version:`, error);
+      return null;
+    }
+
+    if (!data) {
+      console.log(`API: No current version found for ${policyType}, creating default`);
+      return await createDefaultPolicyVersion(policyType);
+    }
+
+    console.log(`API: Current ${policyType} version:`, data);
+    return data as unknown as PolicyVersions;
+  } catch (error) {
+    console.error(`Unexpected error fetching ${policyType} version:`, error);
     return null;
   }
-
-  console.log(`API: Current ${policyType} version:`, data);
-  return data as unknown as PolicyVersions;
 }
 
 /**
