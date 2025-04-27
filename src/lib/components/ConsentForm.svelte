@@ -4,7 +4,6 @@
 	import { recordPolicyConsent } from '$lib/api/consents';
 	import { fade } from 'svelte/transition';
 	import { createEventDispatcher } from 'svelte';
-	import { goto } from '$app/navigation';
 
 	// Props를 $props()를 사용하여 정의
 	const { showPrivacyPolicy = true, showTermsOfService = true } = $props();

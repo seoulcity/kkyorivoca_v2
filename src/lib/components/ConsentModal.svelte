@@ -12,6 +12,9 @@
 	// 내부적으로 모달 표시 상태를 관리
 	let modalVisible = $state(false);
 	
+	// 정책 체크가 완료되었는지 추적
+	let policyCheckDone = $state(false);
+	
 	// props의 show 값 변경을 감지하여 내부 상태 업데이트
 	$effect(() => {
 		modalVisible = show;
@@ -32,8 +35,8 @@
 	// 모달 표시 상태가 변경될 때마다 로깅
 	$effect(() => {
 		console.log('ConsentModal Component: Modal visibility changed to:', modalVisible);
-		if (modalVisible && $user) {
-			// 모달이 표시될 때 정책 동의 상태 확인
+		if (modalVisible && $user && !policyCheckDone) {
+			// 모달이 표시될 때 정책 동의 상태 확인 (최초 1회만)
 			checkPolicyConsent();
 		}
 	});
@@ -50,6 +53,9 @@
 			policyReviewState = await needsPolicyReview($user.id);
 			console.log('ConsentModal: Policy review state:', policyReviewState);
 			
+			// 정책 체크 완료 상태 설정
+			policyCheckDone = true;
+			
 			// If no policies need review, close the modal
 			if (!policyReviewState.needsPrivacyPolicyReview && !policyReviewState.needsTermsOfServiceReview) {
 				console.log('ConsentModal: No policies need review, closing modal');
@@ -63,6 +69,16 @@
 			loading = false;
 		}
 	}
+	
+	// 모달이 숨겨졌다가 다시 표시될 경우 (show가 false에서 true로 바뀌는 경우)
+	// policyCheckDone을 재설정하여 다시 체크할 수 있도록 함
+	$effect(() => {
+		if (!show) {
+			// 모달이 숨겨질 때 체크 상태 재설정하지 않음
+			// (다시 표시될 때 체크하지 않도록)
+			// policyCheckDone = false;
+		}
+	});
 	
 	function handleConsentComplete(event: CustomEvent<{ success: boolean; error?: string }>) {
 		console.log('ConsentModal: Consent completion event received:', event.detail);
