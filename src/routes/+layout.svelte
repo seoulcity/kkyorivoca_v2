@@ -135,8 +135,11 @@
 				'consent status:', $userConsentStatus === null ? 'unknown' : ($userConsentStatus ? 'accepted' : 'not accepted'), 
 				'path:', $page.url.pathname, 'show modal:', showConsentModal);
 			
+			// privacy-policy와 terms-of-service 페이지는 로그인 없이도 접근 가능하도록 허용
+			const publicPaths = ['/', '/privacy-policy', '/terms-of-service'];
+			
 			// 로그인 안 됨 + 보호된 페이지 접근 시도 -> 홈 페이지로
-			if (!$user && !$page.url.pathname.startsWith('/privacy-policy') && !$page.url.pathname.startsWith('/terms-of-service') && $page.url.pathname !== '/') {
+			if (!$user && !publicPaths.some(path => $page.url.pathname.startsWith(path))) {
 				console.log('Layout: Redirecting unauthenticated user to home page');
 				goto('/');
 			}
