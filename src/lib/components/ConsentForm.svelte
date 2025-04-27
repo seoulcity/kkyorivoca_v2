@@ -77,8 +77,9 @@
 
 	// 이용약관이나 개인정보 처리방침 페이지로 이동할 때 모달을 일시적으로 닫는 함수
 	function navigateToPage(path: string) {
-		console.log('ConsentForm: Navigating to', path);
-		dispatch('temporaryClose', { redirectTo: path });
+		console.log('ConsentForm: Opening policy page in new window:', path);
+		// 새 창에서 열기
+		window.open(path, '_blank');
 	}
 </script>
 
