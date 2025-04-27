@@ -4,9 +4,18 @@
 	import ConsentForm from './ConsentForm.svelte';
 	import { user } from '$lib/auth';
 	import { hasAcceptedPolicies, needsPolicyReview } from '$lib/api/consents';
+	import { goto } from '$app/navigation';
 
 	// Props 정의
 	let { show = false } = $props();
+	
+	// 내부적으로 모달 표시 상태를 관리
+	let modalVisible = $state(false);
+	
+	// props의 show 값 변경을 감지하여 내부 상태 업데이트
+	$effect(() => {
+		modalVisible = show;
+	});
 	
 	// Track which policies the user needs to review
 	let policyReviewState = $state({
@@ -22,8 +31,8 @@
 	
 	// 모달 표시 상태가 변경될 때마다 로깅
 	$effect(() => {
-		console.log('ConsentModal Component: Modal visibility changed to:', show);
-		if (show && $user) {
+		console.log('ConsentModal Component: Modal visibility changed to:', modalVisible);
+		if (modalVisible && $user) {
 			// 모달이 표시될 때 정책 동의 상태 확인
 			checkPolicyConsent();
 		}
@@ -64,9 +73,20 @@
 			console.log('ConsentModal: Consent not successful, error:', event.detail.error);
 		}
 	}
+	
+	// 약관 또는 개인정보 처리방침 페이지로 이동할 때 모달을 임시로 닫는 함수
+	function handleTemporaryClose(event: CustomEvent<{ redirectTo: string }>) {
+		console.log('ConsentModal: Temporarily closing modal for navigation to', event.detail.redirectTo);
+		// 모달 닫기 (내부 상태 변경)
+		modalVisible = false;
+		// 부모 컴포넌트에 닫았음을 알림
+		dispatch('close', { success: false });
+		// 페이지 이동
+		goto(event.detail.redirectTo);
+	}
 </script>
 
-{#if show}
+{#if modalVisible}
 	<!-- 디버그 로그 및 모달 표시 -->
 	<script>
 		console.log('%cCONSENT MODAL IS VISIBLE!', 'color: green; font-size: 24px; font-weight: bold;');
@@ -94,6 +114,7 @@
 						showPrivacyPolicy={policyReviewState.needsPrivacyPolicyReview} 
 						showTermsOfService={policyReviewState.needsTermsOfServiceReview}
 						on:complete={handleConsentComplete}
+						on:temporaryClose={handleTemporaryClose}
 					/>
 				</div>
 			{/if}

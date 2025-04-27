@@ -4,17 +4,19 @@
 	import { recordPolicyConsent } from '$lib/api/consents';
 	import { fade } from 'svelte/transition';
 	import { createEventDispatcher } from 'svelte';
+	import { goto } from '$app/navigation';
 
-	export let showPrivacyPolicy: boolean = true;
-	export let showTermsOfService: boolean = true;
+	// Props를 $props()를 사용하여 정의
+	const { showPrivacyPolicy = true, showTermsOfService = true } = $props();
 
-	let privacyPolicyAccepted = false;
-	let termsOfServiceAccepted = false;
-	let isSubmitting = false;
-	let submitError: string | null = null;
+	let privacyPolicyAccepted = $state(false);
+	let termsOfServiceAccepted = $state(false);
+	let isSubmitting = $state(false);
+	let submitError: string | null = $state(null);
 	
 	const dispatch = createEventDispatcher<{
 		complete: { success: boolean; error?: string };
+		temporaryClose: { redirectTo: string };
 	}>();
 
 	async function handleSubmit() {
@@ -72,6 +74,12 @@
 			dispatch('complete', { success, error: submitError || undefined });
 		}
 	}
+
+	// 이용약관이나 개인정보 처리방침 페이지로 이동할 때 모달을 일시적으로 닫는 함수
+	function navigateToPage(path: string) {
+		console.log('ConsentForm: Navigating to', path);
+		dispatch('temporaryClose', { redirectTo: path });
+	}
 </script>
 
 <div class="bg-white p-6 rounded-lg shadow-md" transition:fade>
@@ -101,9 +109,13 @@
 					</label>
 				</div>
 				<div class="text-sm text-gray-500">
-					<a href="/privacy-policy" target="_blank" class="text-blue-600 hover:underline">
+					<button
+						on:click={() => navigateToPage('/privacy-policy')}
+						class="text-blue-600 hover:underline"
+						type="button"
+					>
 						개인정보 처리방침 전문 보기
-					</a>
+					</button>
 				</div>
 			</div>
 		{/if}
@@ -125,9 +137,13 @@
 					</label>
 				</div>
 				<div class="text-sm text-gray-500">
-					<a href="/terms-of-service" target="_blank" class="text-blue-600 hover:underline">
+					<button
+						on:click={() => navigateToPage('/terms-of-service')}
+						class="text-blue-600 hover:underline"
+						type="button"
+					>
 						서비스 이용약관 전문 보기
-					</a>
+					</button>
 				</div>
 			</div>
 		{/if}
