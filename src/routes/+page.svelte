@@ -55,8 +55,8 @@
 		
 		<div class="mt-6 text-center text-sm text-gray-500">
 			로그인하면 
-			<a href="/terms-of-service" class="text-blue-600 hover:underline">서비스 이용약관</a> 및 
-			<a href="/privacy-policy" class="text-blue-600 hover:underline">개인정보 처리방침</a>에 
+			<a href="/terms-of-service" target="_blank" rel="noopener noreferrer" class="text-blue-600 hover:underline">서비스 이용약관</a> 및 
+			<a href="/privacy-policy" target="_blank" rel="noopener noreferrer" class="text-blue-600 hover:underline">개인정보 처리방침</a>에 
 			동의하는 것으로 간주됩니다.
 		</div>
 	</div>

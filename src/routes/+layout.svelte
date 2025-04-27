@@ -145,7 +145,10 @@
 			}
 			
 			// 로그인 + 동의 안 됨 + 메인 페이지 접근 -> 동의 모달 표시(자동으로 표시됨)
-			if ($user && $userConsentStatus === false) {
+			// 정책 및 이용약관 페이지에서는 모달 표시하지 않음
+			if ($user && $userConsentStatus === false && 
+				!$page.url.pathname.startsWith('/privacy-policy') && 
+				!$page.url.pathname.startsWith('/terms-of-service')) {
 				console.log('Layout: Logged in user without consent, showing modal');
 				showConsentModal = true;
 			}
@@ -157,11 +160,19 @@
 		console.log('Layout: EFFECT - Monitoring user consent status:', 
 			'User:', $user ? 'logged in' : 'not logged in',
 			'Consent status:', $userConsentStatus === null ? 'checking' : ($userConsentStatus ? 'accepted' : 'not accepted'),
-			'Modal visibility:', showConsentModal);
+			'Modal visibility:', showConsentModal,
+			'Path:', $page.url.pathname);
 			
-		if ($user && $userConsentStatus === false) {
+		// 정책 및 이용약관 페이지에서는 모달 표시하지 않음
+		const policyPages = ['/privacy-policy', '/terms-of-service'];
+		const isOnPolicyPage = policyPages.some(path => $page.url.pathname.startsWith(path));
+		
+		if ($user && $userConsentStatus === false && !isOnPolicyPage) {
 			console.log('Layout: EFFECT - Forcing consent modal to be visible for user that needs consent');
 			showConsentModal = true;
+		} else if (isOnPolicyPage && showConsentModal) {
+			console.log('Layout: On policy page, hiding consent modal');
+			showConsentModal = false;
 		}
 	});
 </script>

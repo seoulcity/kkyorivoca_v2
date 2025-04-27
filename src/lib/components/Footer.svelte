@@ -6,9 +6,9 @@
 
 <footer class="mt-8 py-4 text-center text-xs text-gray-500">
 	<div class="flex justify-center space-x-4">
-		<a href="/terms-of-service" class="hover:underline">이용약관</a>
+		<a href="/terms-of-service" target="_blank" rel="noopener noreferrer" class="hover:underline">이용약관</a>
 		<span>|</span>
-		<a href="/privacy-policy" class="hover:underline">개인정보 처리방침</a>
+		<a href="/privacy-policy" target="_blank" rel="noopener noreferrer" class="hover:underline">개인정보 처리방침</a>
 	</div>
 	<div class="mt-2">
 		© {currentYear} GenPub. All rights reserved.
