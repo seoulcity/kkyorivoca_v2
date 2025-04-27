@@ -17,6 +17,11 @@
 	let consentCheckInProgress = false; // 중복 체크 방지용
 
 	let { children } = $props();
+	
+	// 모달 상태가 변경될 때마다 명확하게 로깅
+	$: {
+		console.log('Layout: Modal show state changed to:', showConsentModal);
+	}
 
 	onMount(() => {
 		console.log('Layout: Component mounted');
@@ -79,12 +84,13 @@
 			
 			// 콘센트 상태를 스토어에 저장
 			userConsentStatus.set(accepted);
-			showConsentModal = !accepted;
 			
 			if (!accepted) {
 				console.log('Layout: User needs to accept policies, showing modal');
+				showConsentModal = true;
 			} else {
 				console.log('Layout: User has already accepted policies');
+				showConsentModal = false;
 			}
 			
 			consentCheckComplete = true;
@@ -114,6 +120,10 @@
 			supabase.auth.signOut().then(() => {
 				goto('/');
 			});
+		} else if (event.detail.success) {
+			// 동의했으면 메인 페이지로 이동
+			console.log('Layout: User accepted policies, redirecting to main page');
+			goto('/main');
 		}
 	}
 	
@@ -123,7 +133,7 @@
 		if (consentCheckComplete) {
 			console.log('Layout: Consent check complete, user:', $user ? 'logged in' : 'not logged in', 
 				'consent status:', $userConsentStatus === null ? 'unknown' : ($userConsentStatus ? 'accepted' : 'not accepted'), 
-				'path:', $page.url.pathname);
+				'path:', $page.url.pathname, 'show modal:', showConsentModal);
 			
 			// 로그인 안 됨 + 보호된 페이지 접근 시도 -> 홈 페이지로
 			if (!$user && !$page.url.pathname.startsWith('/privacy-policy') && !$page.url.pathname.startsWith('/terms-of-service') && $page.url.pathname !== '/') {
@@ -132,13 +142,18 @@
 			}
 			
 			// 로그인 + 동의 안 됨 + 메인 페이지 접근 -> 동의 모달 표시(자동으로 표시됨)
-			if ($user && $userConsentStatus === false && $page.url.pathname === '/main') {
-				console.log('Layout: Logged in user without consent is trying to access main page, showing consent modal');
+			if ($user && $userConsentStatus === false) {
+				console.log('Layout: Logged in user without consent, showing modal');
 				showConsentModal = true;
 			}
 		}
 	});
 </script>
+
+<!-- 콘솔에 모달 상태 추적 로그 추가 -->
+{#if showConsentModal}
+	<div style="display: none;">Modal should be visible</div>
+{/if}
 
 <ConsentModal show={showConsentModal} on:close={handleConsentClose} />
 

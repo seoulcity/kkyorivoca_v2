@@ -21,17 +21,18 @@
 	
 	// 모달 표시 상태가 변경될 때마다 로깅
 	$: {
-		console.log('ConsentModal: Modal visibility changed to:', show);
-	}
-	
-	// Check if user needs to review policies when the user is loaded
-	$: if ($user && show) {
-		console.log('ConsentModal: User loaded and modal should show, checking policy consent...');
-		checkPolicyConsent();
+		console.log('ConsentModal Component: Modal visibility changed to:', show);
+		if (show && $user) {
+			// 모달이 표시될 때 정책 동의 상태 확인
+			checkPolicyConsent();
+		}
 	}
 	
 	async function checkPolicyConsent() {
-		if (!$user) return;
+		if (!$user) {
+			console.log('ConsentModal: No user, skipping consent check');
+			return;
+		}
 		
 		console.log('ConsentModal: Checking policy consent for user:', $user.id);
 		loading = true;
@@ -65,6 +66,7 @@
 </script>
 
 {#if show}
+	<!-- 모달이 표시되는지 확인하기 위한 로그 -->
 	<div class="fixed inset-0 bg-black bg-opacity-50 z-50 flex items-center justify-center" transition:fade>
 		<div 
 			class="relative bg-white rounded-lg shadow-xl w-full max-w-md mx-4 overflow-hidden" 

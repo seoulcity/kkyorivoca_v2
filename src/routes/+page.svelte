@@ -6,17 +6,19 @@
 	
 	// 로그인 상태 및 동의 상태에 따라 메인 페이지로 리다이렉트
 	$effect(() => {
-		// 로그인했고 콘센트 체크가 완료된 상태일 때만 메인 페이지로 이동
-		if ($user && $userConsentStatus !== null) {
-			console.log('Home: User is logged in, consent status:', $userConsentStatus ? 'accepted' : 'not accepted');
-			if ($userConsentStatus === true) {
-				console.log('Home: User has accepted policies, redirecting to main page');
-				goto('/main');
-			} else {
-				// 동의 페이지에서 동의 완료하면 userConsentStatus가 true로 변경되고
-				// 위의 조건에 따라 메인 페이지로 자동 이동함
-				console.log('Home: User has not accepted policies, waiting for consent');
-			}
+		// 로그인 및 모달 표시 상태 로깅
+		if ($user) {
+			console.log('Home: User is logged in, consent status:', $userConsentStatus === null ? 'checking' : ($userConsentStatus ? 'accepted' : 'not accepted'));
+		}
+		
+		// 로그인했고 콘센트 체크가 완료된 상태에서 동의한 경우에만 메인 페이지로 이동
+		if ($user && $userConsentStatus === true) {
+			console.log('Home: User has accepted policies, redirecting to main page');
+			goto('/main');
+		} else if ($user && $userConsentStatus === false) {
+			console.log('Home: User has not accepted policies, waiting for consent modal');
+			// 동의 페이지에서 동의 완료하면 userConsentStatus가 true로 변경되고
+			// 위의 조건에 따라 메인 페이지로 자동 이동함
 		}
 	});
 </script>
