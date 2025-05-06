@@ -1,5 +1,8 @@
 <!-- src/lib/components/Footer.svelte -->
 <script>
+	// Import the SERVICE_TITLE variable
+	import { SERVICE_TITLE } from '$lib/config';
+	
 	// 동적 연도 표시를 위한 변수
 	const currentYear = new Date().getFullYear();
 </script>
@@ -11,6 +14,6 @@
 		<a href="/privacy-policy" target="_blank" rel="noopener noreferrer" class="hover:underline">개인정보 처리방침</a>
 	</div>
 	<div class="mt-2">
-		© {currentYear} GenPub. All rights reserved.
+		© {currentYear} {SERVICE_TITLE}. All rights reserved.
 	</div>
 </footer> 

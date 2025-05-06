@@ -1,7 +1,0 @@
-{
-  "schema": "pgbouncer",
-  "database": "postgres",
-  "extracted_at": "2025-04-27T00:09:05Z",
-  "tables": [
-  ]
-}

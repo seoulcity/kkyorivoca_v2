@@ -1,4 +1,13 @@
-# GenPub
+# ${SERVICE_TITLE}
+
+## Service Configuration
+
+The application uses the following environment variables for configuration:
+
+- `SERVICE_TITLE`: The name of your service displayed throughout the application (default: "GenPub")
+- Database connection variables (see Database Connection section below)
+
+You should set these variables in your `.env` file and in your deployment environment.
 
 ## Deploying to Vercel
 
@@ -10,6 +19,7 @@
 4. Select your GitHub repository
 5. Vercel will automatically detect SvelteKit and configure the build settings
 6. Configure the following environment variables in the Vercel dashboard (under Project Settings > Environment Variables):
+   - `SERVICE_TITLE` (Your application name)
    - `PG_HOST` (Your PostgreSQL host - e.g., aws-0-us-west-1.pooler.supabase.com)
    - `PG_PORT` (Your PostgreSQL port - e.g., 6543)
    - `PG_DATABASE` (Your database name - e.g., postgres)
@@ -69,4 +79,40 @@
 
 ## Database Connection
 
-The project is set up to use PostgreSQL via a direct connection. The database client in `src/lib/db.ts` provides methods for querying the database.
+The project is set up to use PostgreSQL via a connection to Supabase. The database client in `src/lib/db.ts` provides methods for querying the database.
+
+### Supabase Connection Options
+
+Configure your `.env` file with one of the following connection options:
+
+#### Option 1: Direct Connection
+Ideal for applications with persistent, long-lived connections, such as those running on virtual machines or long-standing containers.
+
+```
+PG_HOST=db.ratynnxfnxvaejekupga.supabase.co
+PG_PORT=5432
+PG_DATABASE=postgres
+PG_USER=postgres
+PG_PASSWORD=[YOUR-PASSWORD]
+DATABASE_URL=postgresql://${PG_USER}:${PG_PASSWORD}@${PG_HOST}:${PG_PORT}/${PG_DATABASE}
+```
+
+#### Option 2: Transaction Pooler / Shared Pooler
+Ideal for stateless applications like serverless functions where each interaction with Postgres is brief and isolated.
+
+```
+PG_HOST=aws-0-ap-northeast-2.pooler.supabase.com
+PG_PORT=6543
+PG_DATABASE=postgres
+PG_USER=postgres.ratynnxfnxvaejekupga
+PG_PASSWORD=[YOUR-PASSWORD]
+DATABASE_URL=postgresql://${PG_USER}:${PG_PASSWORD}@${PG_HOST}:${PG_PORT}/${PG_DATABASE}
+```
+
+Choose the connection option that best fits your deployment environment:
+- Use Option 1 (Direct connection) for traditional applications with persistent connections
+- Use Option 2 (Transaction pooler) for serverless or functions-based applications where connections are brief and isolated
+
+Remember to replace `[YOUR-PASSWORD]` with your actual Supabase database password.
+
+You'll also need to set up these environment variables in your Vercel project settings when deploying.

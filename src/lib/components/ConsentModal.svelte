@@ -5,6 +5,7 @@
 	import { user } from '$lib/auth';
 	import { hasAcceptedPolicies, needsPolicyReview } from '$lib/api/consents';
 	import { goto } from '$app/navigation';
+	import { SERVICE_TITLE } from '$lib/config';
 
 	// Props 정의
 	let { show = false } = $props();
@@ -123,7 +124,7 @@
 				<div class="p-4 md:p-5 text-center">
 					<h3 class="mb-5 text-lg font-semibold text-gray-900">서비스 이용 동의</h3>
 					<p class="mb-5 text-sm text-gray-500">
-						GenPub 서비스를 이용하기 위해서는 다음 약관에 동의해야 합니다.
+						{SERVICE_TITLE} 서비스를 이용하기 위해서는 다음 약관에 동의해야 합니다.
 					</p>
 					
 					<ConsentForm 

@@ -3,6 +3,7 @@
 	import { user, userConsentStatus, signOut } from '$lib/auth';
 	import { goto } from '$app/navigation';
 	import Footer from '$lib/components/Footer.svelte';
+	import { SERVICE_TITLE } from '$lib/config';
 	
 	// 로그인 상태 확인, 로그인되지 않았으면 랜딩 페이지로 리다이렉트
 	$effect(() => {
@@ -29,7 +30,7 @@
 
 <div class="flex flex-col items-center justify-center min-h-screen bg-gray-100">
 	<div class="p-8 bg-white rounded-lg shadow-md w-full max-w-md">
-		<h1 class="text-3xl font-bold text-center mb-6">GenPub</h1>
+		<h1 class="text-3xl font-bold text-center mb-6">{SERVICE_TITLE}</h1>
 		
 		{#if $user}
 			<div class="mb-6">

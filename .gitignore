@@ -46,3 +46,6 @@ yarn-error.log*
 # Vite
 vite.config.js.timestamp-*
 vite.config.ts.timestamp-*
+
+# schema
+src/db/schema/

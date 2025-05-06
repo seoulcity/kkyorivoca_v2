@@ -1,6 +1,7 @@
 <!-- src/routes/privacy-policy/+page.svelte -->
 <script lang="ts">
-	// No specific script logic needed for static policy page
+	// Import the SERVICE_TITLE variable
+	import { SERVICE_TITLE } from '$lib/config';
 </script>
 
 <div class="container mx-auto px-4 py-8 max-w-4xl">
@@ -11,7 +12,7 @@
 		
 		<h2 class="text-2xl font-semibold mt-8 mb-4">Introduction</h2>
 		<p>
-			Welcome to GenPub. We respect your privacy and are committed to protecting your personal data.
+			Welcome to {SERVICE_TITLE}. We respect your privacy and are committed to protecting your personal data.
 			This privacy policy will inform you about how we look after your personal data when you visit our website
 			and tell you about your privacy rights and how the law protects you.
 		</p>

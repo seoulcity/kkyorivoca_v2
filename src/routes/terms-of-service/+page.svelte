@@ -1,6 +1,7 @@
 <!-- src/routes/terms-of-service/+page.svelte -->
 <script lang="ts">
-	// No specific script logic needed for static terms page
+	// Import the SERVICE_TITLE variable
+	import { SERVICE_TITLE } from '$lib/config';
 </script>
 
 <div class="container mx-auto px-4 py-8 max-w-4xl">
@@ -11,7 +12,7 @@
 		
 		<h2 class="text-2xl font-semibold mt-8 mb-4">Introduction</h2>
 		<p>
-			Welcome to GenPub. These Terms of Service ("Terms") govern your access to and use of our website, 
+			Welcome to {SERVICE_TITLE}. These Terms of Service ("Terms") govern your access to and use of our website, 
 			applications, and services, so please read them carefully.
 		</p>
 		<p>

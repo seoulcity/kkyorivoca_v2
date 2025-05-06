@@ -3,6 +3,7 @@
 	import { signInWithGoogle, user, userConsentStatus } from '$lib/auth';
 	import { goto } from '$app/navigation';
 	import Footer from '$lib/components/Footer.svelte';
+	import { SERVICE_TITLE } from '$lib/config';
 	
 	// 로그인 상태 및 동의 상태에 따라 메인 페이지로 리다이렉트
 	$effect(() => {
@@ -25,7 +26,7 @@
 
 <div class="flex flex-col items-center justify-center min-h-screen bg-gray-100">
 	<div class="p-8 bg-white rounded-lg shadow-md w-full max-w-md">
-		<h1 class="text-3xl font-bold text-center mb-6">GenPub</h1>
+		<h1 class="text-3xl font-bold text-center mb-6">{SERVICE_TITLE}</h1>
 		<p class="text-center mb-8 text-gray-600">로그인하여 시작하세요</p>
 		
 		<button
