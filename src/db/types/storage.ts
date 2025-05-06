@@ -1,5 +1,5 @@
 // 자동 생성된 storage 스키마 타입
-// 생성 시간: 2025-04-26T11:41:32.557Z
+// 생성 시간: 2025-05-06T13:02:44.794Z
 
 export interface Buckets {
   id: any;
@@ -34,6 +34,15 @@ export interface Objects {
   version: any;
   ownerId: any;
   userMetadata: any;
+  level: any;
+}
+
+export interface Prefixes {
+  bucketId: any;
+  name: any;
+  level: any;
+  createdAt: any;
+  updatedAt: any;
 }
 
 export interface S3MultipartUploads {

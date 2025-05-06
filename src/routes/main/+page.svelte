@@ -62,7 +62,7 @@
 		{/if}
 		
 		<button
-			on:click={handleSignOut}
+			onclick={handleSignOut}
 			class="w-full py-2 px-4 bg-red-600 text-white rounded-md hover:bg-red-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-red-500"
 		>
 			로그아웃

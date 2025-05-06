@@ -1,5 +1,5 @@
 // 자동 생성된 realtime 스키마 타입
-// 생성 시간: 2025-04-26T11:41:32.557Z
+// 생성 시간: 2025-05-06T13:02:44.794Z
 
 export interface Messages {
   topic: any;

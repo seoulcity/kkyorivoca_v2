@@ -1,9 +1,9 @@
+<!-- src/lib/components/ConsentModal.svelte -->
 <script lang="ts">
-	import { createEventDispatcher, onMount } from 'svelte';
-	import { fade } from 'svelte/transition';
+	import { createEventDispatcher } from 'svelte';
 	import ConsentForm from './ConsentForm.svelte';
 	import { user } from '$lib/auth';
-	import { hasAcceptedPolicies, needsPolicyReview } from '$lib/api/consents';
+	import { needsPolicyReview } from '$lib/api/consents';
 	import { goto } from '$app/navigation';
 	import { SERVICE_TITLE } from '$lib/config';
 

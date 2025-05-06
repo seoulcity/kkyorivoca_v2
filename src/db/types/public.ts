@@ -1,24 +1,24 @@
 // 자동 생성된 public 스키마 타입
-// 생성 시간: 2025-04-26T11:41:32.556Z
-
-export interface UserConsents {
-  id: string;
-  userId: string;
-  privacyPolicyAccepted: boolean;
-  privacyPolicyVersion: string | null;
-  privacyPolicyAcceptedAt: Date | string | null;
-  termsOfServiceAccepted: boolean;
-  termsOfServiceVersion: string | null;
-  termsOfServiceAcceptedAt: Date | string | null;
-  createdAt: Date | string;
-  updatedAt: Date | string;
-}
+// 생성 시간: 2025-05-06T13:02:44.794Z
 
 export interface PolicyVersions {
-  id: string;
-  policyType: string;
-  version: string;
-  publishedAt: Date | string;
-  isCurrent: boolean;
+  id: any;
+  policyType: any;
+  version: any;
+  publishedAt: any;
+  isCurrent: any;
+}
+
+export interface UserConsents {
+  id: any;
+  userId: any;
+  privacyPolicyAccepted: any;
+  privacyPolicyVersion: any;
+  privacyPolicyAcceptedAt: any;
+  termsOfServiceAccepted: any;
+  termsOfServiceVersion: any;
+  termsOfServiceAcceptedAt: any;
+  createdAt: any;
+  updatedAt: any;
 }
 
