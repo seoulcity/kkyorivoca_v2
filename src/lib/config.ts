@@ -18,4 +18,5 @@ export const getEnv = (key: string, defaultValue?: string): string => {
 };
 
 // Service configuration
-export const SERVICE_TITLE = getEnv('SERVICE_TITLE', 'GenPub'); 
+export const SERVICE_TITLE = getEnv('VITE_SERVICE_TITLE', 'GenPub');
+export const SERVICE_EMAIL = getEnv('VITE_SERVICE_EMAIL', 'contact@genpub.com'); 

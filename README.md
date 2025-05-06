@@ -4,7 +4,8 @@
 
 The application uses the following environment variables for configuration:
 
-- `SERVICE_TITLE`: The name of your service displayed throughout the application (default: "GenPub")
+- `VITE_SERVICE_TITLE`: The name of your service displayed throughout the application (default: "GenPub")
+- `VITE_SERVICE_EMAIL`: The contact email address for your service (default: "contact@genpub.com")
 - Database connection variables (see Database Connection section below)
 
 You should set these variables in your `.env` file and in your deployment environment.
@@ -19,7 +20,8 @@ You should set these variables in your `.env` file and in your deployment enviro
 4. Select your GitHub repository
 5. Vercel will automatically detect SvelteKit and configure the build settings
 6. Configure the following environment variables in the Vercel dashboard (under Project Settings > Environment Variables):
-   - `SERVICE_TITLE` (Your application name)
+   - `VITE_SERVICE_TITLE` (Your application name)
+   - `VITE_SERVICE_EMAIL` (Your contact email address)
    - `PG_HOST` (Your PostgreSQL host - e.g., aws-0-us-west-1.pooler.supabase.com)
    - `PG_PORT` (Your PostgreSQL port - e.g., 6543)
    - `PG_DATABASE` (Your database name - e.g., postgres)

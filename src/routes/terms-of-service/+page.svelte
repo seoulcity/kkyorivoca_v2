@@ -1,7 +1,7 @@
 <!-- src/routes/terms-of-service/+page.svelte -->
 <script lang="ts">
 	// Import the SERVICE_TITLE variable
-	import { SERVICE_TITLE } from '$lib/config';
+	import { SERVICE_TITLE, SERVICE_EMAIL } from '$lib/config';
 </script>
 
 <div class="container mx-auto px-4 py-8 max-w-4xl">
@@ -80,7 +80,7 @@
 		<h2 class="text-2xl font-semibold mt-8 mb-4">Contact Us</h2>
 		<p>
 			If you have any questions about these Terms, please contact us at:
-			<a href="mailto:contact@genpub.com" class="text-blue-600 hover:underline">contact@genpub.com</a>
+			<a href="mailto:{SERVICE_EMAIL}" class="text-blue-600 hover:underline">{SERVICE_EMAIL}</a>
 		</p>
 	</div>
 </div> 
