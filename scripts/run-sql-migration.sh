@@ -70,7 +70,7 @@ run_migration() {
     export PGPASSWORD="$PG_PASSWORD"
     
     # SQL 실행
-    psql -h "$PG_HOST" -p "$PG_PORT" -d "$PG_DATABASE" -U "$PG_USER" -f "$SQL_FILE" -v ON_ERROR_STOP=1 --quiet --no-psqlrc -X --set AUTOCOMMIT=off --set ON_ERROR_STOP=on
+    psql -h "$PG_HOST" -p "$PG_PORT" -d "$PG_DATABASE" -U "$PG_USER" -f "$SQL_FILE" -v ON_ERROR_STOP=1 --quiet --no-psqlrc -X --set AUTOCOMMIT=off --set ON_ERROR_STOP=on -L /dev/null
     MIGRATION_RESULT=$?
     
     # 결과 확인
