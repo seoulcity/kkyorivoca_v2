@@ -23,8 +23,29 @@
 	
 	// 로그아웃 처리
 	async function handleSignOut() {
-		await signOut();
-		goto('/');
+		try {
+			console.log('Main: Starting sign out process');
+			const result = await signOut();
+			
+			if (result.error) {
+				console.error('Main: Error during sign out:', result.error);
+				// 오류가 발생해도 로컬 상태는 초기화
+				user.set(null);
+				userConsentStatus.set(null);
+				alert('로그아웃 중 오류가 발생했지만, 로컬 세션은 정리되었습니다.');
+			} else {
+				console.log('Main: Sign out successful, redirecting to home page');
+			}
+		} catch (error) {
+			console.error('Main: Exception during sign out:', error);
+			// 예외가 발생해도 로컬 상태는 초기화
+			user.set(null);
+			userConsentStatus.set(null);
+			alert('로그아웃 중 오류가 발생했지만, 로컬 세션은 정리되었습니다.');
+		} finally {
+			// 페이지 새로고침으로 모든 상태 강제 초기화 후 홈 페이지로 이동
+			window.location.href = '/';
+		}
 	}
 </script>
 
