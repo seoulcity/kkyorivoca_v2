@@ -100,15 +100,15 @@
 							id="privacy-policy"
 							type="checkbox"
 							bind:checked={privacyPolicyAccepted}
-							class="w-4 h-4 border border-gray-300 rounded bg-gray-50 focus:ring-3 focus:ring-blue-300"
 							required
+							class="w-4 h-4 rounded text-blue-600 border-gray-300 focus:ring-blue-500 focus:ring-offset-0 transition duration-150 ease-in-out cursor-pointer"
 						/>
 					</div>
-					<label for="privacy-policy" class="ml-2 text-sm font-medium text-gray-900">
+					<label for="privacy-policy" class="ml-3 text-sm font-medium text-gray-700 cursor-pointer">
 						<span class="font-semibold">개인정보 처리방침</span>에 동의합니다.
 					</label>
 				</div>
-				<div class="text-sm text-gray-500">
+				<div class="text-sm text-gray-500 ml-7">
 					<button
 						on:click={() => navigateToPage('/privacy-policy')}
 						class="text-blue-600 hover:underline"
@@ -128,15 +128,15 @@
 							id="terms-of-service"
 							type="checkbox"
 							bind:checked={termsOfServiceAccepted}
-							class="w-4 h-4 border border-gray-300 rounded bg-gray-50 focus:ring-3 focus:ring-blue-300"
 							required
+							class="w-4 h-4 rounded text-blue-600 border-gray-300 focus:ring-blue-500 focus:ring-offset-0 transition duration-150 ease-in-out cursor-pointer"
 						/>
 					</div>
-					<label for="terms-of-service" class="ml-2 text-sm font-medium text-gray-900">
+					<label for="terms-of-service" class="ml-3 text-sm font-medium text-gray-700 cursor-pointer">
 						<span class="font-semibold">서비스 이용약관</span>에 동의합니다.
 					</label>
 				</div>
-				<div class="text-sm text-gray-500">
+				<div class="text-sm text-gray-500 ml-7">
 					<button
 						on:click={() => navigateToPage('/terms-of-service')}
 						class="text-blue-600 hover:underline"
@@ -151,7 +151,7 @@
 		<div class="flex justify-end pt-2">
 			<button
 				type="submit"
-				class="px-4 py-2 bg-blue-600 text-white rounded hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2 disabled:opacity-50"
+				class="px-4 py-2 bg-blue-600 text-white rounded hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2 disabled:opacity-50 transition duration-150 ease-in-out"
 				disabled={isSubmitting || (showPrivacyPolicy && !privacyPolicyAccepted) || (showTermsOfService && !termsOfServiceAccepted)}
 			>
 				{isSubmitting ? '처리 중...' : '동의 및 계속하기'}
