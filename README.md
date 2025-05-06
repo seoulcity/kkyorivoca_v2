@@ -6,9 +6,41 @@ The application uses the following environment variables for configuration:
 
 - `VITE_SERVICE_TITLE`: The name of your service displayed throughout the application (default: "GenPub")
 - `VITE_SERVICE_EMAIL`: The contact email address for your service (default: "contact@genpub.com")
+- `VITE_SITE_URL`: The base URL of your application for OAuth redirects (default: "https://genpub.vercel.app")
+- `VITE_SUPABASE_URL`: Your Supabase project URL
+- `VITE_SUPABASE_ANON_KEY`: Your Supabase anonymous API key
 - Database connection variables (see Database Connection section below)
 
 You should set these variables in your `.env` file and in your deployment environment.
+
+## Google Authentication Setup
+
+This application uses Google OAuth for authentication via Supabase. To set up Google authentication:
+
+1. Go to the [Google Cloud Console](https://console.cloud.google.com/)
+2. Create a new project or select an existing one
+3. Navigate to "APIs & Services" > "Credentials"
+4. Click "Create Credentials" > "OAuth client ID"
+5. Set up the OAuth consent screen if prompted:
+   - User Type: External (or Internal if applicable)
+   - App name: (Your service name)
+   - User support email: (Your email)
+   - Developer contact information: (Your email)
+6. Back in Credentials, set up the OAuth client ID:
+   - Application type: Web application
+   - Name: (Your application name)
+   - Authorized JavaScript origins: Add your domain(s), e.g., `https://yourapp.vercel.app` and `http://localhost:5173` for development
+   - Authorized redirect URIs: Add your Supabase redirect URI(s):
+     - `https://[YOUR_SUPABASE_PROJECT_ID].supabase.co/auth/v1/callback`
+     - `http://localhost:5173/api/auth/callback` (for local development)
+7. Click "Create" and note your Client ID and Client Secret
+8. In your Supabase dashboard:
+   - Go to Authentication > Providers > Google
+   - Enable Google authentication
+   - Enter the Client ID and Client Secret from Google
+   - Save changes
+
+After setting up Google authentication, update your `.env` file with the correct `VITE_SITE_URL` value.
 
 ## Deploying to Vercel
 

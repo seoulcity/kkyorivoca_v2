@@ -39,7 +39,7 @@ yarn-error.log*
 /.svelte-kit
 
 # Env
-.env.*
+# .env.*
 !.env.example
 !.env.test
 
@@ -49,3 +49,6 @@ vite.config.ts.timestamp-*
 
 # schema
 src/db/schema/
+
+# package
+package-lock.json

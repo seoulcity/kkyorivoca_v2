@@ -2,6 +2,7 @@
 import { writable } from 'svelte/store';
 import { supabase } from './supabase';
 import type { User } from '@supabase/supabase-js';
+import { SITE_URL } from './config';
 
 export const user = writable<User | null>(null);
 // 사용자의 이용약관 및 개인정보처리방침 동의 상태를 저장하는 스토어
@@ -18,7 +19,7 @@ export async function signInWithGoogle() {
   const { error } = await supabase.auth.signInWithOAuth({
     provider: 'google',
     options: {
-      redirectTo: 'https://genpub.vercel.app',
+      redirectTo: SITE_URL,
       queryParams: {
         access_type: 'offline',
         prompt: 'consent',

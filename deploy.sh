@@ -14,8 +14,8 @@ vercel whoami > /dev/null 2>&1 || vercel login
 # Set environment variables
 echo "Setting up environment variables..."
 if [ -f .env ]; then
-    # Read PG variables from .env
-    source <(grep -v '^#' .env | grep 'PG_' | sed 's/^/export /')
+    # Read all environment variables from .env
+    source <(grep -v '^#' .env | grep -E 'PG_|VITE_' | sed 's/^/export /')
     echo "Environment variables loaded from .env"
 else
     echo "No .env file found. You'll need to set environment variables manually in the Vercel dashboard."
