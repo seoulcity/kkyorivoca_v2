@@ -1,5 +1,5 @@
 // 자동 생성된 auth 스키마 타입
-// 생성 시간: 2025-05-06T13:02:44.791Z
+// 생성 시간: 2025-05-07T08:44:29.376Z
 
 export interface AuditLogEntries {
   instanceId: any;

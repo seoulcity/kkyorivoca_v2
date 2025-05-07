@@ -4,6 +4,33 @@
 	import { goto } from '$app/navigation';
 	import Footer from '$lib/components/Footer.svelte';
 	import { SERVICE_TITLE } from '$lib/config';
+	import Navigation from '$lib/components/Navigation.svelte';
+	import ServiceTab from '$lib/components/ServiceTab.svelte';
+	import MyInfoTab from '$lib/components/MyInfoTab.svelte';
+	import MemberInfoTab from '$lib/components/MemberInfoTab.svelte';
+	import { isAdmin } from '$lib/roles';
+	
+	// State for active tab
+	let activeTab = $state<'service' | 'myInfo' | 'memberInfo'>('service');
+	
+	// Function to handle tab changes
+	function handleTabChange(event: CustomEvent<'service' | 'myInfo' | 'memberInfo'>) {
+		// Verify permission for memberInfo tab
+		if (event.detail === 'memberInfo' && !$isAdmin) {
+			console.log('Main: Prevented non-admin access to memberInfo tab');
+			return;
+		}
+		
+		activeTab = event.detail;
+	}
+	
+	// Check for admin access to memberInfo tab whenever isAdmin changes
+	$effect(() => {
+		if (activeTab === 'memberInfo' && !$isAdmin) {
+			console.log('Main: Non-admin has memberInfo tab active, switching to service');
+			activeTab = 'service';
+		}
+	});
 	
 	// 로그인 상태 확인, 로그인되지 않았으면 랜딩 페이지로 리다이렉트
 	$effect(() => {
@@ -59,14 +86,26 @@
 					안녕하세요, {$user.email || '사용자'}님!
 				</p>
 			</div>
+			
+			<Navigation activeTab={activeTab} on:tabChange={handleTabChange} />
+			
+			{#if activeTab === 'service'}
+				<ServiceTab />
+			{:else if activeTab === 'myInfo'}
+				<MyInfoTab />
+			{:else if activeTab === 'memberInfo' && $isAdmin}
+				<MemberInfoTab />
+			{/if}
+			
+			<div class="mt-6">
+				<button
+					on:click={handleSignOut}
+					class="w-full py-2 px-4 bg-red-600 text-white rounded-md hover:bg-red-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-red-500"
+				>
+					로그아웃
+				</button>
+			</div>
 		{/if}
-		
-		<button
-			onclick={handleSignOut}
-			class="w-full py-2 px-4 bg-red-600 text-white rounded-md hover:bg-red-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-red-500"
-		>
-			로그아웃
-		</button>
 	</div>
 	
 	<Footer />
